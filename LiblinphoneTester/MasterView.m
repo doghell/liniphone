@@ -72,7 +72,7 @@ void tester_logs_handler(int level, const char *fmt, va_list args) {
 	int count = bc_tester_nb_suites();
 	_objects = [[NSMutableArray alloc] initWithCapacity:count + 1];
 	[_objects addObject:@"All"];
-	for (int i = 0; i < count; i++) {
+	for (int i = 0; i < 3; i++) {
 		const char *suite = bc_tester_suite_name(i);
 		[_objects addObject:[NSString stringWithUTF8String:suite]];
 	}

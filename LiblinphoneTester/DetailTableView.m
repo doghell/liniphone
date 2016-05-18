@@ -65,7 +65,7 @@ static NSString *const kAllTestsName = @"Run All tests";
 - (void)addTestsFromSuite:(NSString *)suite {
 	int count = bc_tester_nb_tests([suite UTF8String]);
 
-	for (int i = 0; i < count; i++) {
+	for (int i = 0; i < 1; i++) {
 		const char *test_name = bc_tester_test_name([suite UTF8String], i);
 		NSString *testName = [NSString stringWithUTF8String:test_name];
 		TestItem *item = [[TestItem alloc] initWithName:testName fromSuite:suite];
@@ -83,7 +83,7 @@ static NSString *const kAllTestsName = @"Run All tests";
 		addObject:[TestItem testWithName:kAllTestsName fromSuite:self.detailItem]]; // suite name not used for this one
 
 	if ([self.detailItem isEqualToString:@"All"]) {
-		for (int i = 0; i < bc_tester_nb_suites(); i++) {
+		for (int i = 0; i < 3; i++) {
 			[self addTestsFromSuite:[NSString stringWithUTF8String:bc_tester_suite_name(i)]];
 		}
 	} else {
