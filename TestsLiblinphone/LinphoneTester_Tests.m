@@ -58,7 +58,7 @@ void tester_logs_handler(int level, const char *fmt, va_list args) {
 	liblinphone_tester_keep_accounts(TRUE);
 	int count = bc_tester_nb_suites();
 
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < count; i++) {
 		const char *suite = bc_tester_suite_name(i);
 
 		int test_count = bc_tester_nb_tests(suite);

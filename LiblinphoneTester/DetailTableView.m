@@ -83,7 +83,7 @@ static NSString *const kAllTestsName = @"Run All tests";
 		addObject:[TestItem testWithName:kAllTestsName fromSuite:self.detailItem]]; // suite name not used for this one
 
 	if ([self.detailItem isEqualToString:@"All"]) {
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < bc_tester_nb_suites(); i++) {
 			[self addTestsFromSuite:[NSString stringWithUTF8String:bc_tester_suite_name(i)]];
 		}
 	} else {
