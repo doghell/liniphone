@@ -2075,9 +2075,12 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 							 @"call-snd=%@;pn-msg-snd=msg.caf",
 							 [[NSBundle mainBundle] bundleIdentifier], APPMODE_SUFFIX, tokenString, ring];
 
+		LOGI(@"Proxy config %s configured for push notifications with contact: %@",
+			 linphone_proxy_config_get_identity(proxyCfg), params);
 		linphone_proxy_config_set_contact_uri_parameters(proxyCfg, [params UTF8String]);
 		linphone_proxy_config_set_contact_parameters(proxyCfg, NULL);
 	} else {
+		LOGI(@"Proxy config %s NOT configured for push notifications", linphone_proxy_config_get_identity(proxyCfg));
 		// no push token:
 		linphone_proxy_config_set_contact_uri_parameters(proxyCfg, NULL);
 		linphone_proxy_config_set_contact_parameters(proxyCfg, NULL);
@@ -2358,4 +2361,12 @@ static int comp_call_state_paused(const LinphoneCall *call, const void *param) {
 	return NO;
 }
 
+// ugly hack to export symbol from liblinphone so that they are available for the linphoneTests target
+// linphoneTests target do not link with liblinphone but instead dynamically link with ourself which is
+// statically linked with liblinphone, so we must have exported required symbols from the library to
+// have them available in linphoneTests
+// DO NOT INVOKE THIS METHOD
+- (void)exportSymbolsForUITests {
+	linphone_address_set_header(NULL, NULL, NULL);
+}
 @end

@@ -38,7 +38,7 @@
 	linphone_core_set_network_reachable(LC, NO);
 
 	// it can take several seconds to receive the remote push notification...
-	int timeout = 5;
+	int timeout = 15;
 	while (timeout > 0) {
 		[tester tryFindingViewWithAccessibilityLabel:@"Contact name, Message" error:nil];
 		timeout--;

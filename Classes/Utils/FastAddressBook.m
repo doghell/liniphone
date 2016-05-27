@@ -133,10 +133,18 @@ static void sync_address_book(ABAddressBookRef addressBook, CFDictionaryRef info
 
 - (void)registerAddrsFor:(Contact *)contact {
 	for (NSString *phone in contact.phoneNumbers) {
-		[_addressBookMap setObject:contact forKey:phone];
+		char *normalizedPhone =
+			linphone_proxy_config_normalize_phone_number(linphone_core_get_default_proxy_config(LC), phone.UTF8String);
+		NSString *name =
+			[FastAddressBook normalizeSipURI:normalizedPhone ? [NSString stringWithUTF8String:normalizedPhone] : phone];
+		if (phone != NULL) {
+			[_addressBookMap setObject:contact forKey:(name ?: [FastAddressBook localizedLabel:phone])];
+		}
+		if (normalizedPhone)
+			ms_free(normalizedPhone);
 	}
 	for (NSString *sip in contact.sipAddresses) {
-		[_addressBookMap setObject:contact forKey:sip];
+		[_addressBookMap setObject:contact forKey:([FastAddressBook normalizeSipURI:sip] ?: sip)];
 	}
 }
 
@@ -269,21 +277,21 @@ void sync_address_book(ABAddressBookRef addressBook, CFDictionaryRef info, void 
 - (BOOL)saveContact:(Contact *)contact {
 	CFErrorRef error = NULL;
 	if (ABRecordGetRecordID(contact.person) == kABRecordInvalidID) {
-		ABAddressBookAddRecord(addressBook, contact.person, (CFErrorRef *)&error);
-		if (error != NULL) {
-			LOGE(@"Add contact %p: Fail(%@)", contact.person, [(__bridge NSError *)error localizedDescription]);
-		} else {
+		if (ABAddressBookAddRecord(addressBook, contact.person, (CFErrorRef *)&error)) {
 			LOGI(@"Add contact %p: Success!", contact.person);
+		} else {
+			LOGE(@"Add contact %p: Fail(%@)", contact.person, [(__bridge NSError *)error localizedDescription]);
+			return FALSE;
 		}
 	}
 
 	// Save address book
 	error = NULL;
-	ABAddressBookSave(addressBook, &error);
-	if (error != NULL) {
-		LOGE(@"Save AddressBook: Fail(%@)", [(__bridge NSError *)error localizedDescription]);
-	} else {
+	if (ABAddressBookSave(addressBook, &error)) {
 		LOGI(@"Save AddressBook: Success!");
+	} else {
+		LOGE(@"Save AddressBook: Fail(%@)", [(__bridge NSError *)error localizedDescription]);
+		return FALSE;
 	}
 	[self reload];
 
