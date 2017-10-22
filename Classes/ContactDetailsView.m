@@ -312,7 +312,7 @@ static UICompositeViewDescription *compositeDescription = nil;
 		[VIEW(ImagePickerView).popoverController dismissPopoverAnimated:TRUE];
 	}
 
-	[FastAddressBook setAvatar:image forContact:_contact];
+	[_contact setAvatar:image];
 
 	[_avatarImage setImage:[FastAddressBook imageForContact:_contact thumbnail:NO] bordered:NO withRoundedRadius:YES];
 }

@@ -98,6 +98,25 @@
 
 #pragma mark - Setters
 
+- (void)setAvatar:(UIImage *)avatar {
+	if (_person) {
+		CFErrorRef error = NULL;
+		if (!ABPersonRemoveImageData(_person, &error)) {
+			LOGW(@"Can't remove entry: %@", [(__bridge NSError *)error localizedDescription]);
+		}
+		NSData *dataRef = UIImageJPEGRepresentation(avatar, 0.9f);
+		CFDataRef cfdata = CFDataCreate(NULL, [dataRef bytes], [dataRef length]);
+
+		if (!ABPersonSetImageData(_person, cfdata, &error)) {
+			LOGW(@"Can't add entry: %@", [(__bridge NSError *)error localizedDescription]);
+		}
+
+		CFRelease(cfdata);
+	} else {
+		LOGW(@"%s: Cannot do it when using LinphoneFriend, skipping", __FUNCTION__);
+	}
+}
+
 - (void)setFirstName:(NSString *)firstName {
 	BOOL ret = FALSE;
 	if (_person) {

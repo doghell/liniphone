@@ -22,6 +22,7 @@
 @property(nonatomic, strong) NSMutableArray *emails;
 @property(nonatomic, strong) NSMutableArray *phoneNumbers;
 
+- (void)setAvatar:(UIImage *)avatar;
 - (UIImage *)avatar:(BOOL)thumbnail;
 - (NSString *)displayName;
 

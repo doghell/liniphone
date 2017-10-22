@@ -298,24 +298,4 @@ void sync_address_book(ABAddressBookRef addressBook, CFDictionaryRef info, void 
 	return error == NULL;
 }
 
-+ (void)setAvatar:(UIImage *)avatar forContact:(Contact *)contact {
-	FastAddressBook *fab = LinphoneManager.instance.fastAddressBook;
-	CFErrorRef error = NULL;
-	if (!ABPersonRemoveImageData(contact.person, (CFErrorRef *)&error)) {
-		LOGI(@"Can't remove entry: %@", [(__bridge NSError *)error localizedDescription]);
-	}
-	NSData *dataRef = UIImageJPEGRepresentation(avatar, 0.9f);
-	CFDataRef cfdata = CFDataCreate(NULL, [dataRef bytes], [dataRef length]);
-
-	[fab saveAddressBook];
-
-	if (!ABPersonSetImageData(contact.person, cfdata, (CFErrorRef *)&error)) {
-		LOGI(@"Can't add entry: %@", [(__bridge NSError *)error localizedDescription]);
-	} else {
-		[fab saveAddressBook];
-	}
-
-	CFRelease(cfdata);
-}
-
 @end
