@@ -64,7 +64,7 @@ void tester_logs_handler(int level, const char *fmt, va_list args) {
 		const char *suite = bc_tester_suite_name(i);
 
 		int test_count = bc_tester_nb_tests(suite);
-		for (int k = 0; k < test_count; k++) {
+		for (int k = 0; k < 1; k++) {
 			const char *test = bc_tester_test_name(suite, k);
 			NSString *sSuite = [NSString stringWithUTF8String:suite];
 			NSString *sTest = [NSString stringWithUTF8String:test];

@@ -50,6 +50,8 @@
 }
 
 + (void)enableLogs:(OrtpLogLevel)level {
+	level = ORTP_DEBUG;
+
 	BOOL enabled = (level >= ORTP_DEBUG && level < ORTP_ERROR);
 	linphone_core_set_log_collection_path([self cacheDirectory].UTF8String);
 	linphone_core_enable_logs_with_cb(linphone_iphone_log_handler);

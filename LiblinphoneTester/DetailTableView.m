@@ -65,7 +65,7 @@ static NSString *const kAllTestsName = @"Run All tests";
 - (void)addTestsFromSuite:(NSString *)suite {
 	int count = bc_tester_nb_tests([suite UTF8String]);
 
-	for (int i = 0; i < count; i++) {
+	for (int i = 0; i < 1; i++) {
 		const char *test_name = bc_tester_test_name([suite UTF8String], i);
 		NSString *testName = [NSString stringWithUTF8String:test_name];
 		TestItem *item = [[TestItem alloc] initWithName:testName fromSuite:suite];
